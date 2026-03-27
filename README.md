@@ -32,7 +32,7 @@ Open http://127.0.0.1:8100 in your browser.
 ### From source
 
 ```bash
-git clone https://github.com/yourname/flowpipe.git
+git clone https://github.com/pavlenchichikov/flowpipe.git
 cd flowpipe
 pip install -e ".[dev]"
 flowpipe --reload
