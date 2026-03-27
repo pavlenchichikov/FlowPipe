@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowPipe — ETL Builder</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
+</head>
+<body>
+<div class="app">
+    <!-- Header -->
+    <header class="header">
+        <h1>FlowPipe</h1>
+        <div class="header-actions">
+            <button class="btn" onclick="uploadFileDialog()">Upload File</button>
+            <button class="btn btn-success" onclick="runPipeline()">Run Pipeline</button>
+            <button class="btn" onclick="exportCode()">Export Python</button>
+            <button class="btn" onclick="schedulePipeline()">Schedule</button>
+            <button class="btn btn-danger" onclick="clearCanvas()">Clear</button>
+        </div>
+    </header>
+
+    <!-- Sidebar: Node Palette -->
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <!-- Canvas -->
+    <main class="canvas-area">
+        <div id="drawflow"></div>
+    </main>
+
+    <!-- Properties Panel -->
+    <aside class="properties" id="properties">
+        <div class="empty">Select a node to edit its properties</div>
+    </aside>
+
+    <!-- Bottom Panel -->
+    <div class="bottom-panel" id="bottom-panel">
+        <div class="tabs">
+            <div class="tab active" data-tab="preview" onclick="switchTab(this)">Preview</div>
+            <div class="tab" data-tab="code" onclick="switchTab(this)">Python Code</div>
+            <div class="tab" data-tab="log" onclick="switchTab(this)">Run Log</div>
+        </div>
+        <div class="tab-content" id="tab-content">
+            <div class="empty" style="margin-top:20px">Run the pipeline to see results here</div>
+        </div>
+        <div class="stats" id="stats-bar"></div>
+    </div>
+</div>
+
+<!-- Hidden file input -->
+<input type="file" id="file-input" style="display:none" onchange="handleFileUpload(this)">
+
+<!-- Modal container -->
+<div id="modal-root"></div>
+
+<script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
