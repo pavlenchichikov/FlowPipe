@@ -1,4 +1,4 @@
-/* ── FlowPipe Frontend ─────────────────────────────────────── */
+/* FlowPipe Frontend */
 
 let editor;
 let nodeTypes = [];
@@ -6,7 +6,7 @@ let selectedNodeId = null;
 let lastRunResult = null;
 let generatedCode = "";
 
-/* ── Drawflow init ────────────────────────────────────────── */
+/* Drawflow init */
 
 document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("drawflow");
@@ -35,14 +35,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderSidebar();
 });
 
-/* ── Load node types from API ─────────────────────────────── */
+/* Load node types from API */
 
 async function loadNodeTypes() {
     const res = await fetch("/api/nodes");
     nodeTypes = await res.json();
 }
 
-/* ── Sidebar rendering ────────────────────────────────────── */
+/* Sidebar rendering */
 
 function renderSidebar() {
     const sidebar = document.getElementById("sidebar");
@@ -73,7 +73,7 @@ function renderSidebar() {
     sidebar.innerHTML = html;
 }
 
-/* ── Drag & drop ──────────────────────────────────────────── */
+/* Drag & drop */
 
 function dragNode(ev, type) {
     ev.dataTransfer.setData("nodeType", type);
@@ -91,7 +91,7 @@ document.addEventListener("dragover", (ev) => {
     if (ev.target.closest(".canvas-area")) ev.preventDefault();
 });
 
-/* ── Add node to canvas ───────────────────────────────────── */
+/* Add node to canvas */
 
 function addNodeToCanvas(type) {
     addNodeAtPos(type, 400, 300);
@@ -129,7 +129,7 @@ function addNodeAtPos(type, x, y) {
     );
 }
 
-/* ── Properties panel ─────────────────────────────────────── */
+/* Properties panel */
 
 function renderProperties(nodeId) {
     const panel = document.getElementById("properties");
@@ -182,7 +182,7 @@ function updateParam(nodeId, paramName, value) {
     }
 }
 
-/* ── Build pipeline payload ───────────────────────────────── */
+/* Build pipeline payload */
 
 function buildPipelinePayload() {
     const exportData = editor.export();
@@ -210,7 +210,7 @@ function buildPipelinePayload() {
     return { nodes, edges };
 }
 
-/* ── Run pipeline ─────────────────────────────────────────── */
+/* Run pipeline */
 
 async function runPipeline() {
     const payload = buildPipelinePayload();
@@ -236,7 +236,7 @@ async function runPipeline() {
     }
 }
 
-/* ── Render preview table ─────────────────────────────────── */
+/* Render preview table */
 
 function renderPreview() {
     if (!lastRunResult || !lastRunResult.nodes) return;
@@ -285,7 +285,7 @@ function renderStats() {
     `;
 }
 
-/* ── Export Python code ───────────────────────────────────── */
+/* Export Python code */
 
 async function exportCode() {
     const payload = buildPipelinePayload();
@@ -329,7 +329,7 @@ function downloadCode() {
     a.click();
 }
 
-/* ── Tab switching ────────────────────────────────────────── */
+/* Tab switching */
 
 function switchTab(el) {
     document.querySelectorAll(".bottom-panel .tab").forEach(t => t.classList.remove("active"));
@@ -357,7 +357,7 @@ function switchTab(el) {
             let html = '<div style="font-family:monospace;font-size:12px">';
             lastRunResult.nodes.forEach(n => {
                 const icon = n.error ? '<span class="err">[FAIL]</span>' : '<span class="ok">[OK]</span>';
-                html += `<div>${icon} ${n.node_type} — ${n.rows} rows, ${n.columns} cols, ${n.elapsed_ms}ms`;
+                html += `<div>${icon} ${n.node_type} - ${n.rows} rows, ${n.columns} cols, ${n.elapsed_ms}ms`;
                 if (n.error) html += ` <span class="err">${n.error}</span>`;
                 html += `</div>`;
             });
@@ -369,7 +369,7 @@ function switchTab(el) {
     }
 }
 
-/* ── File upload ──────────────────────────────────────────── */
+/* File upload */
 
 function uploadFileDialog() {
     document.getElementById("file-input").click();
@@ -393,7 +393,7 @@ async function handleFileUpload(input) {
     input.value = "";
 }
 
-/* ── Schedule ─────────────────────────────────────────────── */
+/* Schedule */
 
 function schedulePipeline() {
     const payload = buildPipelinePayload();
@@ -449,7 +449,7 @@ function closeModal() {
     document.getElementById("modal-root").innerHTML = "";
 }
 
-/* ── Clear canvas ─────────────────────────────────────────── */
+/* Clear canvas */
 
 function clearCanvas() {
     if (confirm("Clear all nodes from the canvas?")) {
@@ -460,7 +460,7 @@ function clearCanvas() {
     }
 }
 
-/* ── Utility ──────────────────────────────────────────────── */
+/* Utility */
 
 function escapeHtml(text) {
     const div = document.createElement("div");

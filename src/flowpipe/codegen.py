@@ -2,7 +2,26 @@
 
 from __future__ import annotations
 
+from flowpipe.nodes.registry import get_node_class
 from flowpipe.pipeline import EdgeSpec, NodeSpec
+
+
+def _params_with_defaults(spec: NodeSpec) -> dict:
+    """Merge a node's schema defaults under its provided params.
+
+    Keeps codegen from crashing when an optional param (e.g. delimiter) is
+    omitted, which happens for headless/CLI pipelines that only set required fields.
+    """
+    import flowpipe.nodes  # noqa: F401  (ensure node types are registered)
+
+    params: dict = {}
+    cls = get_node_class(spec.type)
+    if cls:
+        for field in cls.param_schema:
+            if "default" in field:
+                params[field["name"]] = field["default"]
+    params.update(spec.params)
+    return params
 
 _IMPORTS = """import pandas as pd
 from sqlalchemy import create_engine, text
@@ -33,7 +52,7 @@ _TRANSFORM_TEMPLATES: dict[str, str] = {
     "FillMissing": '{input}.fillna({value!r})',
     "GroupAggregate": '{input}.groupby([{group_cols}], as_index=False).agg({agg_dict})',
     "RenameColumns": '{input}.rename(columns={mapping})',
-    "CastTypes": '{input}  # cast types — see params',
+    "CastTypes": '{input}  # cast types - see params',
     "JoinTables": '{input_0}.merge({input_1}, on=[{on_cols}], how={how!r})',
 }
 
@@ -66,7 +85,7 @@ def generate_script(nodes: list[NodeSpec], edges: list[EdgeSpec]) -> str:
         var = f"df_{i}"
         var_map[nid] = var
         parents = adj_in.get(nid, [])
-        p = spec.params
+        p = _params_with_defaults(spec)
 
         if spec.type in _SOURCE_TEMPLATES:
             tpl = _SOURCE_TEMPLATES[spec.type]
@@ -119,7 +138,7 @@ def generate_script(nodes: list[NodeSpec], edges: list[EdgeSpec]) -> str:
 
             lines.append(f"{var} = {expr}")
         else:
-            lines.append(f"# {var} = <{spec.type}> — manual implementation needed")
+            lines.append(f"# {var} = <{spec.type}> - manual implementation needed")
 
     lines.append("")
     lines.append('print("Pipeline complete.")')

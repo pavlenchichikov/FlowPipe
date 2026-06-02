@@ -1,0 +1,11 @@
+{
+  "nodes": [
+    {"id": "src", "type": "SampleData", "params": {"dataset": "sales", "rows": 100}},
+    {"id": "flt", "type": "FilterRows", "params": {"condition": "price > 50"}},
+    {"id": "out", "type": "CSVDestination", "params": {"filename": "sales_over_50.csv"}}
+  ],
+  "edges": [
+    {"source": "src", "target": "flt"},
+    {"source": "flt", "target": "out"}
+  ]
+}

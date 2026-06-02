@@ -1,9 +1,8 @@
-"""Source nodes — data ingestion from files and databases."""
+"""Source nodes - data ingestion from files and databases."""
 
 from __future__ import annotations
 
 import os
-from typing import Any
 
 import pandas as pd
 from sqlalchemy import create_engine, text

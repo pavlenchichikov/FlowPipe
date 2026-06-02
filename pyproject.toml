@@ -9,7 +9,7 @@ description = "Visual ETL pipeline builder with drag-and-drop interface"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
-authors = [{ name = "FlowPipe Contributors" }]
+authors = [{ name = "Pavel Galashin" }]
 keywords = ["etl", "pipeline", "data", "drag-and-drop", "visual"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -48,9 +48,9 @@ mysql = ["pymysql>=1.1"]
 flowpipe = "flowpipe.__main__:main"
 
 [project.urls]
-Homepage = "https://github.com/yourname/flowpipe"
-Repository = "https://github.com/yourname/flowpipe"
-Issues = "https://github.com/yourname/flowpipe/issues"
+Homepage = "https://github.com/pavlenchichikov/flowpipe"
+Repository = "https://github.com/pavlenchichikov/flowpipe"
+Issues = "https://github.com/pavlenchichikov/flowpipe/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/flowpipe"]
@@ -61,6 +61,11 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# codegen holds dense one-line pandas templates; test fixtures inline long specs.
+"src/flowpipe/codegen.py" = ["E501"]
+"tests/test_pipeline.py" = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

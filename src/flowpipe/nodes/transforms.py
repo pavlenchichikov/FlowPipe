@@ -1,4 +1,4 @@
-"""Transform nodes — data manipulation and enrichment."""
+"""Transform nodes - data manipulation and enrichment."""
 
 from __future__ import annotations
 
@@ -98,7 +98,8 @@ class GroupAggregate(BaseNode):
     param_schema = [
         {"name": "group_by", "type": "text", "label": "Group By (comma-separated)",
          "required": True, "placeholder": "region, product"},
-        {"name": "aggregations", "type": "textarea", "label": "Aggregations (column=func, one per line)",
+        {"name": "aggregations", "type": "textarea",
+         "label": "Aggregations (column=func, one per line)",
          "required": True, "placeholder": "price=sum\nquantity=mean"},
     ]
 
@@ -196,7 +197,8 @@ class FillMissing(BaseNode):
     param_schema = [
         {"name": "method", "type": "select", "label": "Method",
          "options": ["value", "ffill", "bfill", "mean", "median"], "default": "value"},
-        {"name": "value", "type": "text", "label": "Fill Value (for 'value' method)", "default": "0"},
+        {"name": "value", "type": "text",
+         "label": "Fill Value (for 'value' method)", "default": "0"},
         {"name": "columns", "type": "text", "label": "Columns (blank = all)", "default": ""},
     ]
 
@@ -204,7 +206,10 @@ class FillMissing(BaseNode):
         df = inputs[0].copy()
         method = self.params.get("method", "value")
         cols_str = self.params.get("columns", "").strip()
-        cols = [c.strip() for c in cols_str.split(",") if c.strip()] if cols_str else df.columns.tolist()
+        cols = (
+            [c.strip() for c in cols_str.split(",") if c.strip()]
+            if cols_str else df.columns.tolist()
+        )
 
         if method == "ffill":
             df[cols] = df[cols].ffill()

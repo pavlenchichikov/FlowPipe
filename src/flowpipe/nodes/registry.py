@@ -1,4 +1,4 @@
-"""Global node registry — all node subclasses auto-register here."""
+"""Global node registry - all node subclasses auto-register here."""
 
 from __future__ import annotations
 

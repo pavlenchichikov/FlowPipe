@@ -1,4 +1,4 @@
-"""Pipeline scheduler — run pipelines on a cron schedule."""
+"""Pipeline scheduler - run pipelines on a cron schedule."""
 
 from __future__ import annotations
 

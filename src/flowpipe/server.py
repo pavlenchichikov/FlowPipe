@@ -1,4 +1,4 @@
-"""FastAPI server — REST API and static file serving."""
+"""FastAPI server - REST API and static file serving."""
 
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ async def lifespan(application: FastAPI):
 app = FastAPI(title="FlowPipe", version="0.1.0", lifespan=lifespan)
 
 
-# ── API routes ──────────────────────────────────────────────────
+# API routes
 
 @app.get("/api/nodes")
 async def list_nodes():
@@ -83,7 +83,7 @@ async def codegen(payload: dict[str, Any]):
         return JSONResponse(status_code=400, content={"error": str(exc)})
 
 
-# ── Schedule routes ─────────────────────────────────────────────
+# Schedule routes
 
 @app.get("/api/schedules")
 async def list_schedules():
@@ -109,7 +109,7 @@ async def delete_schedule(entry_id: str):
     return {"ok": True}
 
 
-# ── Static files ────────────────────────────────────────────────
+# Static files
 
 @app.get("/")
 async def index():

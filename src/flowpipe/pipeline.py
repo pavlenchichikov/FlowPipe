@@ -1,4 +1,4 @@
-"""Core pipeline engine — DAG-based execution of node graphs."""
+"""Core pipeline engine - DAG-based execution of node graphs."""
 
 from __future__ import annotations
 
@@ -89,7 +89,9 @@ class Pipeline:
                 results.append(
                     NodeResult(nid, spec.type, 0, 0, [], 0, f"Unknown node type: {spec.type}")
                 )
-                return PipelineResult(False, results, _elapsed(t_start), f"Unknown node: {spec.type}")
+                return PipelineResult(
+                    False, results, _elapsed(t_start), f"Unknown node: {spec.type}"
+                )
 
             node = node_cls(spec.params, upload_dir=upload_dir)
             parents = self._in_edges.get(nid, [])

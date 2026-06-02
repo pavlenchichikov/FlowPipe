@@ -1,4 +1,4 @@
-"""Destination nodes — data export to files and databases."""
+"""Destination nodes - data export to files and databases."""
 
 from __future__ import annotations
 

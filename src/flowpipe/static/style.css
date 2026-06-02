@@ -1,4 +1,4 @@
-/* ── FlowPipe Styles ─────────────────────────────────────────── */
+/* FlowPipe Styles */
 
 :root {
     --bg:        #0f1117;
@@ -26,7 +26,7 @@ body {
     overflow: hidden;
 }
 
-/* ── Layout ──────────────────────────────────────────────────── */
+/* Layout */
 
 .app {
     display: grid;
@@ -35,7 +35,7 @@ body {
     height: 100vh;
 }
 
-/* ── Header ──────────────────────────────────────────────────── */
+/* Header */
 
 .header {
     grid-column: 1 / -1;
@@ -58,7 +58,7 @@ body {
 
 .header-actions { display: flex; gap: 8px; }
 
-/* ── Buttons ─────────────────────────────────────────────────── */
+/* Buttons */
 
 .btn {
     padding: 7px 16px;
@@ -100,7 +100,7 @@ body {
 
 .btn-danger:hover { background: var(--red); color: #fff; }
 
-/* ── Sidebar (Node Palette) ──────────────────────────────────── */
+/* Sidebar (Node Palette) */
 
 .sidebar {
     background: var(--surface);
@@ -146,7 +146,7 @@ body {
 .node-item.cat-transform { border-left: 3px solid var(--blue); }
 .node-item.cat-destination { border-left: 3px solid var(--orange); }
 
-/* ── Canvas ──────────────────────────────────────────────────── */
+/* Canvas */
 
 .canvas-area {
     position: relative;
@@ -201,7 +201,7 @@ body {
     border: 2px solid var(--surface);
 }
 
-/* ── Properties Panel ────────────────────────────────────────── */
+/* Properties Panel */
 
 .properties {
     background: var(--surface);
@@ -259,7 +259,7 @@ body {
 
 .form-group textarea { min-height: 60px; resize: vertical; }
 
-/* ── Bottom Panel (Preview) ──────────────────────────────────── */
+/* Bottom Panel (Preview) */
 
 .bottom-panel {
     grid-column: 2 / 3;
@@ -296,7 +296,7 @@ body {
     padding: 12px;
 }
 
-/* ── Data Table ──────────────────────────────────────────────── */
+/* Data Table */
 
 .data-table {
     width: 100%;
@@ -327,7 +327,7 @@ body {
 
 .data-table tr:hover td { background: rgba(108, 92, 231, 0.05); }
 
-/* ── Stats bar ───────────────────────────────────────────────── */
+/* Stats bar */
 
 .stats {
     display: flex;
@@ -342,7 +342,7 @@ body {
 .stats .ok { color: var(--green); }
 .stats .err { color: var(--red); }
 
-/* ── Code panel ──────────────────────────────────────────────── */
+/* Code panel */
 
 .code-block {
     background: var(--bg);
@@ -357,7 +357,7 @@ body {
     color: var(--text);
 }
 
-/* ── Modal ───────────────────────────────────────────────────── */
+/* Modal */
 
 .modal-overlay {
     position: fixed;
@@ -388,7 +388,7 @@ body {
     margin-top: 16px;
 }
 
-/* ── Upload indicator ────────────────────────────────────────── */
+/* Upload indicator */
 
 .upload-zone {
     border: 2px dashed var(--border);
@@ -404,7 +404,7 @@ body {
 
 .upload-zone:hover { border-color: var(--accent); color: var(--text); }
 
-/* ── Scrollbar ───────────────────────────────────────────────── */
+/* Scrollbar */
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
