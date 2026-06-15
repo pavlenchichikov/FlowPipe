@@ -3,9 +3,6 @@
 A visual ETL builder. Wire nodes together on a canvas, preview the data at each
 step, then export the result as a Python script or run it on a cron schedule.
 
-![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
-![License: MIT](https://img.shields.io/badge/license-MIT-green)
-
 ## Install
 
 ```bash
