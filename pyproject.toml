@@ -7,7 +7,7 @@ name = "flowpipe-etl"
 version = "0.1.0"
 description = "Visual ETL pipeline builder with drag-and-drop interface"
 readme = "README.md"
-license = "MIT"
+license = "CC-BY-NC-4.0"
 requires-python = ">=3.10"
 authors = [{ name = "Pavel Galashin" }]
 keywords = ["etl", "pipeline", "data", "drag-and-drop", "visual"]
@@ -15,7 +15,7 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    "License :: Other/Proprietary License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
