@@ -24,6 +24,23 @@ class BaseNode(ABC):
     def execute(self, inputs: list[pd.DataFrame]) -> pd.DataFrame:
         ...
 
+    def codegen(self, input_vars: list) -> str:
+        raise NotImplementedError(
+            "%s does not implement codegen" % type(self).__name__
+        )
+
+    def output_columns(self, input_schemas: list) -> list | None:
+        return input_schemas[0] if input_schemas else None
+
+    @classmethod
+    def allowed_options(cls, param_name: str) -> list | None:
+        """Return the declared "options" list for a select param, or None if
+        the param isn't a select / isn't found."""
+        for field in cls.param_schema:
+            if field.get("name") == param_name:
+                return field.get("options")
+        return None
+
     @classmethod
     def spec(cls) -> dict:
         return {

@@ -41,7 +41,7 @@ class NodeSpec:
 
 @dataclass
 class EdgeSpec:
-    """Directed edge: source_id -> target_id."""
+    """Directed edge from source_id to target_id."""
 
     source: str
     target: str

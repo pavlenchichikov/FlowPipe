@@ -30,6 +30,14 @@ class CSVSource(BaseNode):
             encoding=self.params.get("encoding", "utf-8"),
         )
 
+    def codegen(self, input_vars):
+        p = self.params
+        return "pd.read_csv(%r, delimiter=%r, encoding=%r)" % (
+            p["filename"], p.get("delimiter", ","), p.get("encoding", "utf-8"))
+
+    def output_columns(self, input_schemas):
+        return None
+
 
 @register
 class ExcelSource(BaseNode):
@@ -46,6 +54,13 @@ class ExcelSource(BaseNode):
         sheet = self.params.get("sheet_name", "") or 0
         return pd.read_excel(path, sheet_name=sheet)
 
+    def codegen(self, input_vars):
+        sheet = self.params.get("sheet_name", "") or 0
+        return "pd.read_excel(%r, sheet_name=%r)" % (self.params["filename"], sheet)
+
+    def output_columns(self, input_schemas):
+        return None
+
 
 @register
 class JSONSource(BaseNode):
@@ -61,6 +76,13 @@ class JSONSource(BaseNode):
     def execute(self, inputs: list[pd.DataFrame]) -> pd.DataFrame:
         path = os.path.join(self.upload_dir, self.params["filename"])
         return pd.read_json(path, orient=self.params.get("orient", "records"))
+
+    def codegen(self, input_vars):
+        return "pd.read_json(%r, orient=%r)" % (
+            self.params["filename"], self.params.get("orient", "records"))
+
+    def output_columns(self, input_schemas):
+        return None
 
 
 @register
@@ -79,6 +101,13 @@ class SQLSource(BaseNode):
         engine = create_engine(self.params["connection_string"])
         with engine.connect() as conn:
             return pd.read_sql(text(self.params["query"]), conn)
+
+    def codegen(self, input_vars):
+        return "pd.read_sql(text(%r), create_engine(%r).connect())" % (
+            self.params["query"], self.params["connection_string"])
+
+    def output_columns(self, input_schemas):
+        return None
 
 
 @register
@@ -121,3 +150,44 @@ class SampleData(BaseNode):
                 "value": np.cumsum(rng.normal(0, 1, n)).round(4),
                 "category": rng.choice(["A", "B", "C"], n),
             })
+
+    def codegen(self, input_vars):
+        n = int(self.params.get("rows", 100))
+        ds = self.params.get("dataset", "sales")
+        rng_expr = "np.random.default_rng(42)"
+        if ds == "sales":
+            return (
+                "pd.DataFrame({"
+                "'date': pd.date_range('2024-01-01', periods=%d, freq='D'), "
+                "'product': %s.choice(['Widget A', 'Widget B', 'Gadget X', 'Gadget Y'], %d), "
+                "'region': %s.choice(['North', 'South', 'East', 'West'], %d), "
+                "'quantity': %s.integers(1, 50, %d), "
+                "'price': (%s.random(%d) * 100).round(2)})"
+                % (n, rng_expr, n, rng_expr, n, rng_expr, n, rng_expr, n)
+            )
+        elif ds == "employees":
+            return (
+                "pd.DataFrame({"
+                "'id': range(1, %d + 1), "
+                "'name': ['Employee_%%d' %% i for i in range(1, %d + 1)], "
+                "'department': %s.choice(['Engineering', 'Sales', 'Marketing', 'HR'], %d), "
+                "'salary': (%s.normal(70000, 15000, %d)).round(2), "
+                "'hire_date': pd.date_range('2020-01-01', periods=%d, freq='7D')})"
+                % (n, n, rng_expr, n, rng_expr, n, n)
+            )
+        else:
+            return (
+                "pd.DataFrame({"
+                "'timestamp': pd.date_range('2024-01-01', periods=%d, freq='h'), "
+                "'value': np.cumsum(%s.normal(0, 1, %d)).round(4), "
+                "'category': %s.choice(['A', 'B', 'C'], %d)})"
+                % (n, rng_expr, n, rng_expr, n)
+            )
+
+    def output_columns(self, input_schemas):
+        cols = {
+            "sales": ["date", "product", "region", "quantity", "price"],
+            "employees": ["id", "name", "department", "salary", "hire_date"],
+            "timeseries": ["timestamp", "value", "category"],
+        }
+        return cols.get(self.params.get("dataset", "sales"))

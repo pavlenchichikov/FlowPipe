@@ -34,6 +34,14 @@ class CSVDestination(BaseNode):
         )
         return df
 
+    def codegen(self, input_vars):
+        return "%s.to_csv(%r, sep=%r, index=%s)" % (
+            input_vars[0], self.params["filename"], self.params.get("delimiter", ","),
+            self.params.get("index", "no") == "yes")
+
+    def output_columns(self, input_schemas):
+        return input_schemas[0] if input_schemas else None
+
 
 @register
 class ExcelDestination(BaseNode):
@@ -51,6 +59,13 @@ class ExcelDestination(BaseNode):
         path = os.path.join(self.upload_dir, self.params["filename"])
         df.to_excel(path, sheet_name=self.params.get("sheet_name", "Sheet1"), index=False)
         return df
+
+    def codegen(self, input_vars):
+        return "%s.to_excel(%r, sheet_name=%r, index=False)" % (
+            input_vars[0], self.params["filename"], self.params.get("sheet_name", "Sheet1"))
+
+    def output_columns(self, input_schemas):
+        return input_schemas[0] if input_schemas else None
 
 
 @register
@@ -70,6 +85,13 @@ class JSONDestination(BaseNode):
         path = os.path.join(self.upload_dir, self.params["filename"])
         df.to_json(path, orient=self.params.get("orient", "records"), indent=2, force_ascii=False)
         return df
+
+    def codegen(self, input_vars):
+        return "%s.to_json(%r, orient=%r, indent=2, force_ascii=False)" % (
+            input_vars[0], self.params["filename"], self.params.get("orient", "records"))
+
+    def output_columns(self, input_schemas):
+        return input_schemas[0] if input_schemas else None
 
 
 @register
@@ -95,3 +117,11 @@ class SQLDestination(BaseNode):
             index=False,
         )
         return df
+
+    def codegen(self, input_vars):
+        return "%s.to_sql(%r, create_engine(%r), if_exists=%r, index=False)" % (
+            input_vars[0], self.params["table_name"], self.params["connection_string"],
+            self.params.get("if_exists", "replace"))
+
+    def output_columns(self, input_schemas):
+        return input_schemas[0] if input_schemas else None

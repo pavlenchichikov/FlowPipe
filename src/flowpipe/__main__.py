@@ -106,9 +106,7 @@ def cmd_codegen(args) -> int:
 
 
 def cmd_validate(args) -> int:
-    import flowpipe.nodes  # noqa: F401
-    from flowpipe.nodes.registry import get_node_class
-    from flowpipe.pipeline import Pipeline
+    from flowpipe.validation import validate_pipeline
 
     try:
         nodes, edges = _load_pipeline(args.pipeline)
@@ -116,20 +114,7 @@ def cmd_validate(args) -> int:
         print(f"Invalid pipeline file: {exc}")
         return 1
 
-    problems = []
-    ids = {n.id for n in nodes}
-    for n in nodes:
-        if get_node_class(n.type) is None:
-            problems.append(f"unknown node type '{n.type}' (id={n.id})")
-    for e in edges:
-        if e.source not in ids:
-            problems.append(f"edge source not found: {e.source}")
-        if e.target not in ids:
-            problems.append(f"edge target not found: {e.target}")
-    try:
-        Pipeline(nodes, edges)._topo_sort()
-    except ValueError as exc:
-        problems.append(str(exc))
+    problems = validate_pipeline(nodes, edges, probe_schema=getattr(args, "schema", False))
 
     if problems:
         print("Invalid pipeline:")
@@ -172,6 +157,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_val = sub.add_parser("validate", help="Check a pipeline without running it")
     p_val.add_argument("pipeline", help="Path to a pipeline .json file")
+    p_val.add_argument(
+        "--schema", action="store_true",
+        help="probe source headers and check column references"
+    )
     p_val.set_defaults(func=cmd_validate)
 
     return parser

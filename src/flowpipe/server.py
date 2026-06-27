@@ -83,6 +83,16 @@ async def codegen(payload: dict[str, Any]):
         return JSONResponse(status_code=400, content={"error": str(exc)})
 
 
+@app.post("/api/validate")
+async def validate(payload: dict[str, Any]):
+    from flowpipe.pipeline import EdgeSpec, NodeSpec
+    from flowpipe.validation import validate_pipeline
+    nodes = [NodeSpec(**n) for n in payload.get("nodes", [])]
+    edges = [EdgeSpec(**e) for e in payload.get("edges", [])]
+    problems = validate_pipeline(nodes, edges, probe_schema=payload.get("schema", False))
+    return {"valid": not problems, "problems": problems}
+
+
 # Schedule routes
 
 @app.get("/api/schedules")
